@@ -16,11 +16,7 @@ public class Cliente {
     }
 
     public Cliente(String nombre) {
-        //Atención al formato del identificador de Cliente (this.nombre). Observa el test...
-    	//El nombre del cliente será el identificador (con un formato de 5 dígitos) + .- + el valor del parámetro nombre (id.- nombre)
-        //Si el parámetro nombre es nulo o está vacío, el cliente se llamará "id.- sinNombre"
-    	//completa la siguiente línea
-        this.nombre = Format... + ".- " + ( ?  :);
+        this.nombre = Format.formatInt(++numClientes, 5)+ ".- " + ( nombre==null ? "sinNombre" :nombre);
         this.mascotas = new ArrayList<>();
     }
 
@@ -29,65 +25,98 @@ public class Cliente {
         //Hacemos uso de indexOf()
         //4 líneas
         //...
+    	if(this.mascotas.indexOf(nombre)!=-1 && this.mascotas.indexOf(especie)!=-1)return false;
+    	mascotas.add(new Mascota(nombre, especie));
+    	return true;
+    	    
     }
 
     public Cita addCita(String nombre, String especie) {
+        Mascota mascota = null;
+        return ( mascotas.contains(nombre) && mascotas.contains(especie)) ? mascota.addCita() : null;
+
         //Se añade una nueva cita (devolviendo su referencia)
         //Si este cliente no tiene la mascota con clave (nombre, especie) --> se devuelve null
         //2 líneas
         //...
     }
 
-    public void clear() {
-        //1 for() 
-        //...
-        this.mascotas.clear();
-    }
+	public void clear() {
+		int size = size();
+		for (int i = 0; i < size; i++) {
+			Mascota mascota = mascotas.get(i);
+		}
+		this.mascotas.clear();
+	}
 
     public int size() {
         return this.mascotas.size();
     }
-
+     
     public ArrayList<ArrayList<Integer>> getCitasId(){
-    	//Hacemos uso de estas dos variables locales
         ArrayList<ArrayList<Integer>> result = new ArrayList<>();
-        ArrayList<Integer> aux;
-        //2 for() anidados tipo forEach
-        //En el primer for() se itera sobre las mascotas y, para cada mascota, se itera sobre las citas
-        //...
-        return result;
-    }
+        for (Mascota mascota : mascotas) {
+            ArrayList<Integer> aux = new ArrayList<>();
+           
+            for (Cita cita : mascota) {
+                aux.add(cita.getCitaId());
+            }
 
-    public ArrayList<ArrayList<Integer>> getCitasId(String palabra) {
-    	//Hacemos uso de estas dos variables locales
-        ArrayList<ArrayList<Integer>> result = new ArrayList<>();
-        ArrayList<Integer> aux;
-        //2 for() anidados tipo forEach
-        //Muy similar al anterior, solo que en este caso queremos únicamente las citas que incluyan entre sus valoraciones la palabra que se indica como parámetro de entrada
-        //...
+            result.add(aux);
+        }
         return result;
     }
+	
+	public ArrayList<ArrayList<Integer>> getCitasId(String palabra) {
+
+		ArrayList<ArrayList<Integer>> result = new ArrayList<>();
+		for (Mascota mascota : mascotas) {
+			ArrayList<Integer> aux = new ArrayList<>();
+
+			for (Cita cita : mascota) {
+				if (cita.contienePalabra(palabra)) {
+					aux.add(cita.getCitaId());
+				}
+			}
+			result.add(aux);
+		}
+		return result;
+	}
 
     public ArrayList<Integer> getCitasId(String nombre, String especie){
         //Si la mascota con clave (nombre, especie) no existe, se devuelve null;
         ArrayList<Integer> result = new ArrayList<>();
-        //1 for() tipo forEach
-        //...
-        return result;
+        for (Mascota mascota : mascotas) {
+            if () {
+                for (Cita cita : mascota) {
+                    result.add(cita.getCitaId());
+                }
+                return result;
+            }
+        }
+        return null; // 
     }
 
     public Cita getCita(int citaId){
         Cita result = null;
-        //1 for()
-        //Interesa el uso de break, ¿verdad?
-        //...
+        for (Mascota mascota : mascotas) {
+            Cita cita = mascota.getCita(citaId);
+            if (cita != null) {
+                result = cita;
+                break;
+            }
+        }
         return result;
     }
 
-    public Mascota getMascota(int citaId){
-        //1 for() con 1 único if
-        //...
-        return null;
+	public Mascota getMascota(int citaId){
+    	 for (Mascota mascota : mascotas) {
+    		 Cita cita = mascota.getCita(citaId);
+    	     if (cita.getCitaId() == citaId) {
+    	         return mascota;
+    	     }  
+    	 }
+    	 return null;
     }
 
     @Override
@@ -101,6 +130,12 @@ public class Cliente {
         //Hacemos uso del método toStringExtended() de mascota
         //Cuidado con la última coma...
         //...
+        for (Mascota mascota : mascotas) {
+            result+=mascota.toStringExtended()+", "; 
+            if (!mascotas.isEmpty()) {
+            result+=mascota.toStringExtended();
+           }
+        }
         return result + "}";
     }
 
