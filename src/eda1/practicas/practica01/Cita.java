@@ -11,7 +11,7 @@ public class Cita {
 													
 
 	public static void inicializaNumCitas() {
-		numCitas = 0; // se podría escribir this.numCitas = 0 ?????
+		numCitas = 0;
 	}
 
 	public Cita() {
@@ -20,7 +20,7 @@ public class Cita {
 	}
 
 	public Cita(int citaId) {
-		this.citaId = ++citaId;
+		this.citaId = citaId;
 		this.valoraciones = null;
 	}
 
@@ -40,7 +40,6 @@ public class Cita {
 			if (valorStr.contains(palabra.toLowerCase().trim()))return true;
 		}
 		return false;
-		// 1 for() tipo forEach ¿+ break?
 	}
 
 	public void clear() {

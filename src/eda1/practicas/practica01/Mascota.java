@@ -28,21 +28,17 @@ public class Mascota implements Comparable<Mascota>, Iterable<Cita> {
 
     public Cita getCita(int citaId) {
         if (citaId < 0) return null;
-        if (historial.indexOf(citaId) != -1) return historial.get(citaId);
-        return null;
-     
+        int index = this.historial.indexOf(new Cita(citaId));
+        return index < 0 ? null:historial.get(index);
     
-        //Si el parámetro citaId es menor que cero, se devuelve null
-    	//Tendremos que buscar la cita con identificador citaId en la colección historial.
-        //Para buscar un elemento en una colección tipo LinkedList<T> hacemos uso del método indexOf(), ¿verdad? (nada de iterar para buscar un elemento, ¡uf!)
-        //3 líneas
-    	//...
     }
        
 
     public void clear() {
-        //1 for() tipo forEach
-        this.historial.clear();
+    	 for (Cita cita : historial) {
+    		 cita.clear();
+    	    }
+       this.historial.clear();
     }
 
     public int size() {
@@ -61,11 +57,7 @@ public class Mascota implements Comparable<Mascota>, Iterable<Cita> {
     @Override
     public int compareTo(Mascota other) {
     	int resultado = this.nombre.compareTo(other.nombre);
-        if  (resultado==0)  resultado = this.especie.compareTo(other.especie);
-        return resultado;
-        //Orden natural: clave principal -> nombre (ascendente); clave secundaria -> especie (ascendente)
-        //2 líneas
-    	//...  
+        return (resultado==0) ? resultado = this.especie.compareTo(other.especie): resultado ;
          
     }
 
